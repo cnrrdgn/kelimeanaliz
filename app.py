@@ -1,3 +1,6 @@
+import nltk
+
+
 import streamlit as st
 import zeyrek
 import requests
