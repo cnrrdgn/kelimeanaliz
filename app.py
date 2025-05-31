@@ -1,19 +1,14 @@
+from flask import Flask, render_template, request
+import zeyrek
+import requests
 import nltk
 
 nltk.download('punkt')
 
-
-
-import streamlit as st
-import zeyrek
-import requests
-import webbrowser
-
-# Zeyrek morfolojik analizör
+app = Flask(__name__)
 analyzer = zeyrek.MorphAnalyzer()
 cache = {}
 
-# Etiket çevirileri
 TranslateData = {
     "Inf1": "Mastar eki", "Verb": "Fiil", "Noun": "İsim", "Past": "Görülen geçmiş zaman",
     "Narr": "Duyulan geçmiş zaman", "NarrPart": "Duyulan geçmiş zaman", "Pres": "Şimdiki zaman",
@@ -36,9 +31,8 @@ def translateTable(ek_listesi):
 
 def getMeaningAndExample(kelime):
     url = f"https://sozluk.gov.tr/gts?ara={kelime}"
-    headers = { "User-Agent": "Mozilla/5.0" }
     try:
-        resp = requests.get(url, headers=headers, timeout=10)
+        resp = requests.get(url, timeout=10)
         data = resp.json()
     except Exception:
         return "Anlam alınamadı.", "Örnek alınamadı."
@@ -65,28 +59,19 @@ def analize(kelime):
     cache[kelime] = result
     return result
 
-# Streamlit Arayüzü
-st.title("📚 Kelime Analiz Aracı")
+@app.route("/", methods=["GET", "POST"])
+def index():
+    sonuc = None
+    kelime = ""
+    anlam = ""
+    ornek = ""
+    if request.method == "POST":
+        kelime = request.form["kelime"]
+        sonuc = analize(kelime)
+        if sonuc:
+            anlam, ornek = getMeaningAndExample(sonuc.lemma)
 
-kelime = st.text_input("Bir kelime girin:")
+    return render_template("index.html", sonuc=sonuc, kelime=kelime, anlam=anlam, ornek=ornek, TranslateData=TranslateData, translateTable=translateTable)
 
-if st.button("Analiz Et") and kelime:
-    sonuc = analize(kelime)
-    if not sonuc:
-        st.warning("Bu kelime çözümlenemedi.")
-    else:
-        kök = sonuc.lemma
-        tur = TranslateData.get(sonuc.pos, sonuc.pos)
-        ekler = ', '.join(translateTable(sonuc.morphemes))
-        anlam, örnek = getMeaningAndExample(kök)
-
-        st.markdown(f"""
-        **🔍 Kök:** {kök}  
-        **📌 Tür:** {tur}  
-        **🧩 Ekler:** {ekler}  
-        **📖 Anlam:** {anlam}  
-        **✍️ Örnek:** {örnek}  
-        """)
-        tdk_url = f"https://sozluk.gov.tr/?kelime={kök}"
-        st.markdown(f"[🔗 TDK'de Görüntüle]({tdk_url})")
-
+if __name__ == "__main__":
+    app.run(debug=True)
