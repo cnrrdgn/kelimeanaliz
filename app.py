@@ -66,14 +66,25 @@ def index():
     kelime = ""
     anlam = ""
     ornek = ""
+    translate_list = []
+
     if request.method == "POST":
         kelime = request.form["kelime"]
         sonuc = analize(kelime)
         if sonuc:
             anlam, ornek = getMeaningAndExample(sonuc.lemma)
+            translate_list = translateTable(sonuc.analysis)  # Burada analiz edilen ekleri çeviriyoruz
 
-    return render_template("index.html", sonuc=sonuc, kelime=kelime, anlam=anlam, ornek=ornek, TranslateData=TranslateData, translateTable=translateTable)
+    return render_template(
+        "index.html",
+        sonuc=sonuc,
+        kelime=kelime,
+        anlam=anlam,
+        ornek=ornek,
+        TranslateData=TranslateData,
+        translateTable=translate_list
+    )
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render PORT değişkenini kullanır
+    port = int(os.environ.get("PORT", 5000))  # Render ya da local port
     app.run(host="0.0.0.0", port=port)

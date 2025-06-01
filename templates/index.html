@@ -1,33 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Çeviri Uygulaması</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <title>Türkçe Kelime Analizi</title>
 </head>
 <body>
-    <h1>Merhaba 👋</h1>
-
+    <h1>Türkçe Kelime Analiz Aracı</h1>
     <form method="post">
-        <label for="kelime">Kelime gir:</label>
-        <input type="text" id="kelime" name="kelime">
-        <button type="submit">Çevir</button>
+        <input type="text" name="kelime" placeholder="Bir kelime girin" value="{{ kelime }}" required />
+        <button type="submit">Analiz Et</button>
     </form>
 
     {% if sonuc %}
-        <h2>Sonuç:</h2>
-        <p><strong>Kelime:</strong> {{ kelime }}</p>
-        <p><strong>Anlam:</strong> {{ anlam }}</p>
-        <p><strong>Örnek:</strong> {{ ornek }}</p>
-        <p><strong>Çeviri:</strong> {{ TranslateData }}</p>
-    {% endif %}
-
-    {% if translateTable %}
-        <h2>Çeviri Tablosu</h2>
+        <h2>Sonuçlar:</h2>
+        <p><strong>Kök (Lemma):</strong> {{ sonuc.lemma }}</p>
+        <p><strong>Ekler ve Anlamları:</strong></p>
         <ul>
             {% for item in translateTable %}
                 <li>{{ item }}</li>
             {% endfor %}
         </ul>
+        <p><strong>Kelime Anlamı:</strong> {{ anlam }}</p>
+        <p><strong>Örnek Cümle:</strong> {{ ornek }}</p>
     {% endif %}
 </body>
 </html>
