@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request
 import zeyrek
 import requests
-import nltk
 import os
-
-nltk.download('punkt')
 
 app = Flask(__name__)
 analyzer = zeyrek.MorphAnalyzer()
@@ -73,7 +70,7 @@ def index():
         sonuc = analize(kelime)
         if sonuc:
             anlam, ornek = getMeaningAndExample(sonuc.lemma)
-            translate_list = translateTable(sonuc.analysis)  # Burada analiz edilen ekleri çeviriyoruz
+            translate_list = translateTable(sonuc.analysis)
 
     return render_template(
         "index.html",
@@ -86,5 +83,5 @@ def index():
     )
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render ya da local port
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
