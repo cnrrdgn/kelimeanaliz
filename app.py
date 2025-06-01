@@ -59,6 +59,7 @@ def analize(kelime):
     result = result[0][0]
     cache[kelime] = result
     return result
+    print(type(result)) 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
