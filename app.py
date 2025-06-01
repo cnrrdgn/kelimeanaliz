@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import zeyrek
 import requests
 import nltk
+import os
 
 nltk.download('punkt')
 
@@ -74,4 +75,5 @@ def index():
     return render_template("index.html", sonuc=sonuc, kelime=kelime, anlam=anlam, ornek=ornek, TranslateData=TranslateData, translateTable=translateTable)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render PORT değişkenini kullanır
+    app.run(host="0.0.0.0", port=port)
