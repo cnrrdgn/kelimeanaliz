@@ -50,10 +50,10 @@ def getMeaningAndExample(kelime):
 def analize(kelime):
     if kelime in cache:
         return cache[kelime]
-    result = analyzer.analyze_word(kelime)
-    if not result:
+    result = analyzer.analyze([kelime])
+    if not result or not result[0]:
         return None
-    result = result[0]  # En olası analiz
+    result = result[0][0]
     cache[kelime] = result
     return result
 
