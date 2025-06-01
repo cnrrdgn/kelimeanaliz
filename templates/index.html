@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Çeviri Uygulaması</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Merhaba 👋</h1>
+
+    <form method="post">
+        <label for="kelime">Kelime gir:</label>
+        <input type="text" id="kelime" name="kelime">
+        <button type="submit">Çevir</button>
+    </form>
+
+    {% if sonuc %}
+        <h2>Sonuç:</h2>
+        <p><strong>Kelime:</strong> {{ kelime }}</p>
+        <p><strong>Anlam:</strong> {{ anlam }}</p>
+        <p><strong>Örnek:</strong> {{ ornek }}</p>
+        <p><strong>Çeviri:</strong> {{ TranslateData }}</p>
+    {% endif %}
+
+    {% if translateTable %}
+        <h2>Çeviri Tablosu</h2>
+        <ul>
+            {% for item in translateTable %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
