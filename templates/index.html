@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <title>Türkçe Kelime Analizi</title>
+    <meta charset="UTF-8">
+    <title>Kelime Çözümleyici</title>
 </head>
 <body>
-    <h1>Türkçe Kelime Analiz Aracı</h1>
+    <h1>Kelime Analizi</h1>
     <form method="post">
-        <input type="text" name="kelime" placeholder="Bir kelime girin" value="{{ kelime }}" required />
+        <label for="kelime">Kelime gir:</label>
+        <input type="text" name="kelime" id="kelime" required>
         <button type="submit">Analiz Et</button>
     </form>
 
     {% if sonuc %}
         <h2>Sonuçlar:</h2>
-        <p><strong>Kök (Lemma):</strong> {{ sonuc.lemma }}</p>
-        <p><strong>Ekler ve Anlamları:</strong></p>
         <ul>
-            {% for item in translateTable %}
-                <li>{{ item }}</li>
+            {% for analiz in sonuc %}
+                <li>{{ analiz[0].result }}</li>
             {% endfor %}
         </ul>
-        <p><strong>Kelime Anlamı:</strong> {{ anlam }}</p>
-        <p><strong>Örnek Cümle:</strong> {{ ornek }}</p>
     {% endif %}
 </body>
 </html>
