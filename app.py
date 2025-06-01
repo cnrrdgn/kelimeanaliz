@@ -2,6 +2,9 @@ from flask import Flask, render_template, request
 import zeyrek
 import requests
 import os
+import nltk
+nltk.download('punkt_tab')
+
 
 app = Flask(__name__)
 analyzer = zeyrek.MorphAnalyzer()
