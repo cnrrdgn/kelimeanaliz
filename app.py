@@ -50,7 +50,7 @@ def getMeaningAndExample(kelime):
 def analize(kelime):
     if kelime in cache:
         return cache[kelime]
-    result = analyzer.analyze([kelime])
+    result = analyzer.analyze(kelime)  # Burada artık liste yok!
     if not result or not result[0]:
         return None
     result = result[0][0]
